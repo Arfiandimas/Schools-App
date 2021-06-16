@@ -15,6 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   };
   Student.init({
     name: DataTypes.STRING,
+    nisn: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    religion: DataTypes.ENUM('Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu', 'yang lainnya'),
+    gender: DataTypes.ENUM('laki-laki', 'Perempuan'),
+    place_of_birth: DataTypes.STRING,
+    date_of_birth: DataTypes.DATE,
+    address: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING
   }, {

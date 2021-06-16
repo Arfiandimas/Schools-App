@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
+const bcrypt = require('bcrypt');
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
@@ -62,10 +63,16 @@ module.exports = {
                 if (!user) {
                     res.status(401).send({message: "email belum terdaftar !"})
                 }
+                
+                const isMatch = await bcrypt.compare(password, user.password)
 
-                if (user.password === password) {
+                if (isMatch) {
                     const payload = {id: user}
                     const token = jwt.sign (payload, jwtOptions.secretOrKey);
+                    
+                    const decode = jwt.verify(token, jwtOptions.secretOrKey);
+                    res.status(201).send([payload.id, decode.id])
+
                     res.status(201).send({user, token})
                 } else {
                     res.status(401).send({message: "password salah !"})
@@ -81,7 +88,7 @@ module.exports = {
     async protected (req, res) {
         try {
             const token = req.header('Authorization').replace('Bearer ', '');
-            const decode = jwt.verify(token, jwtOptions.secretOrKey); // TODO: kog id tidak muncul
+            const decode = jwt.verify(token, jwtOptions.secretOrKey);
             res.status(200).send({data : decode.id, message: "token valid !"})
         } catch (error) {
             res.status(500).send(error)

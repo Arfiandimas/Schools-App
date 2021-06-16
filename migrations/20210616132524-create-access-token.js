@@ -1,32 +1,37 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Schools', {
+    await queryInterface.createTable('AccessTokens', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      payload: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      logo: {
+      secret_key: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      npsn: {
+      model_type: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      email: {
+      model_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      scope: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      password: {
+      revoked: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +44,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Schools');
+    await queryInterface.dropTable('AccessTokens');
   }
 };
