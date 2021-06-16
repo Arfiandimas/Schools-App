@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "barjono",
+    "password": "password",
+    "database": "smartosis_authentication",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "barjono",
+    "password": "password",
+    "database": "smartosis_authentication",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "barjono",
+    "password": "password",
+    "database": "smartosis_authentication",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
