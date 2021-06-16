@@ -8,9 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      school_id: {
+      schoolId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references : {
+          model: 'School',
+          key: 'id'
+        }
       },
       name: {
         allowNull: false,

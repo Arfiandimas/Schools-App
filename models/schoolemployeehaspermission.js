@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   SchoolEmployeeHasPermission.init({
-    school_employee_id: DataTypes.INTEGER,
-    permission_id: DataTypes.INTEGER
+    schoolEmployeeId: DataTypes.INTEGER,
+    permissionId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'SchoolEmployeeHasPermission',

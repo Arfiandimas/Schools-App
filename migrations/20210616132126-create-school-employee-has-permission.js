@@ -8,13 +8,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      school_employee_id: {
+      schoolEmployeeId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references : {
+          model: 'SchoolEmployee',
+          key: 'id'
+        }
       },
-      permission_id: {
+      permissionId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references : {
+          model: 'Permission',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
