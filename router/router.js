@@ -1,6 +1,12 @@
 const express = require('express');
 const passport = require('passport')
+
+//Controller
 const AuthBracketBrickController = require('../controllers/AuthBracketBrickController')
+
+//Middleware
+
+//Request Validation
 const BracketbrickRequest = require('./../requests/BracketbrickRequest')
 
 const router = express.Router();
@@ -10,7 +16,6 @@ const {SchoolEmployee} = require('../models')
 const {Student} = require('../models')
 const {Permission} = require('../models')
 const {ModelHasPermission} = require('../models')
-
 
 //Bracket Brick
 router.post('/bracketbrick/register', BracketbrickRequest.register, AuthBracketBrickController.register);

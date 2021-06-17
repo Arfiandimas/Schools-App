@@ -1,32 +1,15 @@
-const jwt = require('jsonwebtoken')
-const passport = require('passport')
 const bcrypt = require('bcrypt');
-const JwtStrategy = require('passport-jwt').Strategy
-const ExtractJwt = require('passport-jwt').ExtractJwt
+const sequelize = require('sequelize')
+
+const AuthService = require('./../services/AuthService')
 
 const {BracketBrick} = require('../models')
-
-const jwtOptions = {}
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-jwtOptions.secretOrKey = "secret_key"
 
 const getUser = async obj => {
     return await BracketBrick.findOne({
         where: obj
     })
 }
-
-const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
-    const user = getUser({id: jwt_payload.id})
-
-    if(user) {
-        next(null, user);
-    } else {
-        next(null, false);
-    }
-})
-
-passport.use(strategy)
 
 module.exports = {
     async register (req, res) {
@@ -40,17 +23,18 @@ module.exports = {
 
             const userExist = await getUser({email : email})
             if (userExist) {
-                res.status(422).send({message: "email terdaftar !"})
+                return res.status(422).send({message: "email terdaftar !"})
             }
 
-            await newUser.save()
+            const user = await newUser.save()
 
-            const user = await getUser({email : email})
-            const payload = {id: user.id}
-            const token = jwt.sign (payload, jwtOptions.secretOrKey)
-            res.status(201).send({user : newUser, token})
+            const modelType = 'BracketBrick'
+            const scope = 'bracketbrick'
+            const token = await AuthService.registerService(user, modelType, scope)
+
+            return res.status(201).send({user, token})
         } catch (error) {
-            res.status(500).send(error)
+            return res.status(500).send(error)
         }
     },
 
