@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   };
   AccessToken.init({
     payload: DataTypes.STRING,
-    secret_key: DataTypes.STRING,
-    model_type: DataTypes.STRING,
-    model_id: DataTypes.INTEGER,
+    secretKey: DataTypes.STRING,
+    modelType: DataTypes.STRING,
+    modelId: DataTypes.INTEGER,
     scope: DataTypes.STRING,
     revoked: DataTypes.BOOLEAN
   }, {

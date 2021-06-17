@@ -12,15 +12,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      secret_key: {
+      secretKey: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      model_type: {
+      modelType: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      model_id: {
+      modelId: {
         allowNull: false,
         type: Sequelize.INTEGER
       },

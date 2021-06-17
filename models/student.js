@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Student.belongsTo(models.School, {foreignKey: 'schoolId'})
     }
   };
   Student.init({
@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     religion: DataTypes.ENUM('Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu', 'yang lainnya'),
     gender: DataTypes.ENUM('laki-laki', 'Perempuan'),
-    place_of_birth: DataTypes.STRING,
-    date_of_birth: DataTypes.DATE,
+    placeOfBirth: DataTypes.STRING,
+    dateOfBirth: DataTypes.DATE,
     address: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING
