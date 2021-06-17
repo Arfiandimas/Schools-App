@@ -8,4 +8,4 @@ app.use(express.json());
 app.use(cors());
 app.use(Router);
 
-app.listen(8181, () => console.log(`Server running in port http://localhost:8181`))
+app.listen(process.env.PORT, () => console.log(`Server running in port http://localhost:${process.env.PORT}`))

@@ -1,5 +1,4 @@
-const bcrypt = require('bcrypt');
-const sequelize = require('sequelize')
+const bcrypt = require('bcrypt')
 
 const AuthService = require('./../services/AuthService')
 
@@ -27,10 +26,10 @@ module.exports = {
             }
 
             const user = await newUser.save()
-
+            
             const modelType = 'BracketBrick'
             const scope = 'bracketbrick'
-            const token = await AuthService.registerService(user, modelType, scope)
+            const token = await AuthService.authenticate(user, modelType, scope)
 
             return res.status(201).send({user, token})
         } catch (error) {
@@ -45,37 +44,32 @@ module.exports = {
                 const user = await getUser({email : email})
 
                 if (!user) {
-                    res.status(401).send({message: "email belum terdaftar !"})
+                    return res.status(401).send({message: "email belum terdaftar !"})
                 }
                 
                 const isMatch = await bcrypt.compare(password, user.password)
 
                 if (isMatch) {
-                    const payload = {id: user}
-                    const token = jwt.sign (payload, jwtOptions.secretOrKey);
-                    
-                    const decode = jwt.verify(token, jwtOptions.secretOrKey);
-                    res.status(201).send([payload.id, decode.id])
-
-                    res.status(201).send({user, token})
+                    const modelType = 'BracketBrick'
+                    const scope = 'bracketbrick'
+                    const token = await AuthService.authenticate(user, modelType, scope)
+                    return res.status(200).send({user, token})
                 } else {
-                    res.status(401).send({message: "password salah !"})
+                    return res.status(401).send({message: "password salah !"})
                 }
             } else {
-                res.status(401).send({message: "isikan email dan password !"})
+                return res.status(401).send({message: "isikan email dan password !"})
             }
         } catch (error) {
-            res.status(500).send(error)
+            return res.status(500).send(error)
         }
     },
 
     async protected (req, res) {
         try {
-            const token = req.header('Authorization').replace('Bearer ', '');
-            const decode = jwt.verify(token, jwtOptions.secretOrKey);
-            res.status(200).send({data : decode.id, message: "token valid !"})
+            return res.status(200).send({data : req.user, message: "token valid !"})
         } catch (error) {
-            res.status(500).send(error)
+            return res.status(500).send(error)
         }
     }
 }

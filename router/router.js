@@ -8,6 +8,7 @@ const AuthBracketBrickController = require('../controllers/AuthBracketBrickContr
 
 //Request Validation
 const BracketbrickRequest = require('./../requests/BracketbrickRequest')
+const auth = require('./../middleware/auth');
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ const {ModelHasPermission} = require('../models')
 //Bracket Brick
 router.post('/bracketbrick/register', BracketbrickRequest.register, AuthBracketBrickController.register);
 router.post('/bracketbrick/login', AuthBracketBrickController.login);
-router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), AuthBracketBrickController.protected);
+router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), auth,AuthBracketBrickController.protected);
 
 router.get('/cobarelasi', async (req, res) => {
     // const school = await School.findAll({ include: [{model:ModelHasPermission, include: [{model:Permission}]}] })
