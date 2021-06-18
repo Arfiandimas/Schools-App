@@ -1,5 +1,3 @@
-const { v4: uuidv4 } = require('uuid');
-
 'use strict';
 const {
   Model
@@ -16,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   OauthAccessToken.init({
-    payload: DataTypes.STRING,
     secretKey: DataTypes.STRING,
     modelType: DataTypes.STRING,
     modelId: DataTypes.UUID,
@@ -26,10 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'OauthAccessToken',
   });
-
-  OauthAccessToken.beforeCreate( async (oauthAccessToken) => {
-      oauthAccessToken.id = await uuidv4()
-  })
 
   return OauthAccessToken;
 };

@@ -22,7 +22,7 @@ const {ModelHasPermission} = require('../models')
 //Bracket Brick
 router.post('/bracketbrick/register', BracketbrickRequest.register, AuthBracketBrickController.register);
 router.post('/bracketbrick/login', AuthBracketBrickController.login);
-router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), auth,AuthBracketBrickController.protected);
+router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), auth, AuthBracketBrickController.protected);
 
 //School
 router.post('/school/register', AuthSchoolController.register);

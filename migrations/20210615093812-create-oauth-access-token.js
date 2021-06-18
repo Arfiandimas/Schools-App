@@ -8,10 +8,6 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      payload: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       secretKey: {
         allowNull: false,
         type: Sequelize.STRING

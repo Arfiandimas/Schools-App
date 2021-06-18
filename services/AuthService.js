@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
+const { v4: uuidv4 } = require('uuid');
 
 const {OauthAccessToken} = require('../models')
 const {BracketBrick} = require('../models')
@@ -29,10 +30,11 @@ passport.use(strategy)
 
 module.exports = {
     async authenticate (user, modelType, scope) {
-        const payload = {id: {id: user.id,model: modelType}}
+        const oauthAccessTokenId = uuidv4() 
+        const payload = {id: {id: oauthAccessTokenId, user_id: user.id, model: modelType}}
         const token = jwt.sign (payload, process.env.SECRET_KEY)
         const newAcessToken = new OauthAccessToken({
-            payload : JSON.stringify(payload),
+            id : oauthAccessTokenId,
             secretKey : process.env.SECRET_KEY,
             modelType : modelType,
             modelId : user.id,
