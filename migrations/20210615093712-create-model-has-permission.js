@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable('ModelHasPermissions', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       modelType: {
         allowNull: false,
@@ -14,11 +14,11 @@ module.exports = {
       },
       modelId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       permissionId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references : {
           model: 'Permissions',
           key: 'id'

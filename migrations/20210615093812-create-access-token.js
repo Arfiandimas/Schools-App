@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable('AccessTokens', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       payload: {
         allowNull: false,
@@ -22,7 +22,7 @@ module.exports = {
       },
       modelId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       scope: {
         allowNull: false,

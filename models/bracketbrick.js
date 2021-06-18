@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const { v4: uuidv4 } = require('uuid');
 
 'use strict';
 const {
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   BracketBrick.beforeCreate( async (user) => {
+      user.id = await uuidv4()
       user.password = await bcrypt.hash(user.password, 8)
   })
 

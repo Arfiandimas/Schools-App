@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     payload: DataTypes.STRING,
     secretKey: DataTypes.STRING,
     modelType: DataTypes.STRING,
-    modelId: DataTypes.INTEGER,
+    modelId: DataTypes.UUID,
     scope: DataTypes.STRING,
     revoked: DataTypes.BOOLEAN
   }, {
