@@ -26,6 +26,8 @@ router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: fal
 
 //School
 router.post('/school/register', AuthSchoolController.register);
+router.post('/school/login', AuthSchoolController.login);
+router.get('/school/protected', passport.authenticate("jwt", {session: false}), auth, AuthSchoolController.protected);
 
 router.get('/cobarelasi', async (req, res) => {
     // const school = await School.findAll({ include: [{model:ModelHasPermission, include: [{model:Permission}]}] })

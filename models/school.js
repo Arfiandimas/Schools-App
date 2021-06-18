@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt')
 
 'use strict';
 const {
@@ -38,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
 
   School.beforeCreate( async (school) => {
       school.id = await uuidv4()
+      school.password = await bcrypt.hash(school.password, 8)
   })
 
   return School;
