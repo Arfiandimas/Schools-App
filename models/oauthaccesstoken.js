@@ -1,9 +1,11 @@
+const { v4: uuidv4 } = require('uuid');
+
 'use strict';
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class AccessToken extends Model {
+  class OauthAccessToken extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  AccessToken.init({
+  OauthAccessToken.init({
     payload: DataTypes.STRING,
     secretKey: DataTypes.STRING,
     modelType: DataTypes.STRING,
@@ -22,7 +24,12 @@ module.exports = (sequelize, DataTypes) => {
     revoked: DataTypes.BOOLEAN
   }, {
     sequelize,
-    modelName: 'AccessToken',
+    modelName: 'OauthAccessToken',
   });
-  return AccessToken;
+
+  OauthAccessToken.beforeCreate( async (oauthAccessToken) => {
+      oauthAccessToken.id = await uuidv4()
+  })
+
+  return OauthAccessToken;
 };

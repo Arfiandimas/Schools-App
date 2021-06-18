@@ -3,7 +3,7 @@ const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
-const {AccessToken} = require('../models')
+const {OauthAccessToken} = require('../models')
 const {BracketBrick} = require('../models')
 
 const jwtOptions = {}
@@ -31,7 +31,7 @@ module.exports = {
     async authenticate (user, modelType, scope) {
         const payload = {id: {id: user.id,model: modelType}}
         const token = jwt.sign (payload, process.env.SECRET_KEY)
-        const newAcessToken = new AccessToken({
+        const newAcessToken = new OauthAccessToken({
             payload : JSON.stringify(payload),
             secretKey : process.env.SECRET_KEY,
             modelType : modelType,
@@ -52,7 +52,7 @@ module.exports = {
         // const decode = jwt.verify(token, process.env.SECRET_KEY);
         // res.status(201).send([payload.id, decode.id])
         
-        const newAcessToken = new AccessToken({
+        const newAcessToken = new OauthAccessToken({
             payload : JSON.stringify(payload),
             secretKey : process.env.SECRET_KEY,
             modelType : modelType,
