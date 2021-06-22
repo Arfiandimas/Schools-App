@@ -1,17 +1,18 @@
-const express = require('express');
 const passport = require('passport')
+const Router = require('express-group-router');
 
 //Controller
 const AuthBracketBrickController = require('../controllers/AuthBracketBrickController')
 const AuthSchoolController = require('../controllers/AuthSchoolController')
 
 //Middleware
+const AuthMiddleware = require('./../middleware/auth')
 
 //Request Validation
 const BracketbrickRequest = require('./../requests/BracketbrickRequest')
 const auth = require('./../middleware/auth');
 
-const router = express.Router();
+const router = new Router();
 
 const {School} = require('../models')
 const {SchoolEmployee} = require('../models')
@@ -22,12 +23,18 @@ const {ModelHasPermission} = require('../models')
 //Bracket Brick
 router.post('/bracketbrick/register', BracketbrickRequest.register, AuthBracketBrickController.register);
 router.post('/bracketbrick/login', AuthBracketBrickController.login);
-router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), auth, AuthBracketBrickController.protected);
+router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), AuthMiddleware.auth, AuthBracketBrickController.protected);
 
 //School
-router.post('/school/register', AuthSchoolController.register);
-router.post('/school/login', AuthSchoolController.login);
-router.get('/school/protected', passport.authenticate("jwt", {session: false}), auth, AuthSchoolController.protected);
+router.group('/school', (router) => {
+    router.post('/register', AuthSchoolController.register);
+    router.post('/login', AuthSchoolController.login);
+
+    router.group('/protected', (router) => {
+        router.use(AuthMiddleware.auth, passport.authenticate("jwt", {session: false}));
+        router.get('/', AuthSchoolController.protected);
+    })
+})
 
 router.get('/cobarelasi', async (req, res) => {
     // const school = await School.findAll({ include: [{model:ModelHasPermission, include: [{model:Permission}]}] })
@@ -40,4 +47,5 @@ router.get('/cobarelasi', async (req, res) => {
     res.send({permission})
 });
 
-module.exports = router;
+let listRoutes = router.init();
+module.exports = listRoutes;

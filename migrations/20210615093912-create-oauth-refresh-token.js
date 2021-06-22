@@ -1,40 +1,25 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('OauthAccessTokens', {
+    await queryInterface.createTable('OauthRefreshTokens', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      oauthClientId: {
+      oauthAccessTokenId: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.UUID,
         references : {
-          model: 'OauthClients',
+          model: 'OauthAccessTokens',
           key: 'id'
         }
       },
-      modelType: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      modelId: {
-        allowNull: false,
-        type: Sequelize.UUID
-      },
-      scope: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
       revoked: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.BOOLEAN
       },
       expiresAt: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       createdAt: {
@@ -48,6 +33,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('OauthAccessTokens');
+    await queryInterface.dropTable('OauthRefreshTokens');
   }
 };

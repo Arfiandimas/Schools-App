@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class OauthAccessToken extends Model {
+  class OauthRefreshToken extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,17 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  OauthAccessToken.init({
-    oauthClientId: DataTypes.STRING,
-    modelType: DataTypes.STRING,
-    modelId: DataTypes.UUID,
-    scope: DataTypes.STRING,
+  OauthRefreshToken.init({
+    oauthAccessTokenId: DataTypes.UUID,
     revoked: DataTypes.BOOLEAN,
     expiresAt: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'OauthAccessToken',
+    modelName: 'OauthRefreshToken',
   });
-
-  return OauthAccessToken;
+  return OauthRefreshToken;
 };
