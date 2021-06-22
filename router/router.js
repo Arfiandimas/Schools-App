@@ -6,11 +6,10 @@ const AuthBracketBrickController = require('../controllers/AuthBracketBrickContr
 const AuthSchoolController = require('../controllers/AuthSchoolController')
 
 //Middleware
-const AuthMiddleware = require('./../middleware/auth')
+const Middleware = require('../middleware/Middleware')
 
 //Request Validation
 const BracketbrickRequest = require('./../requests/BracketbrickRequest')
-const auth = require('./../middleware/auth');
 
 const router = new Router();
 
@@ -23,15 +22,16 @@ const {ModelHasPermission} = require('../models')
 //Bracket Brick
 router.post('/bracketbrick/register', BracketbrickRequest.register, AuthBracketBrickController.register);
 router.post('/bracketbrick/login', AuthBracketBrickController.login);
-router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), AuthMiddleware.auth, AuthBracketBrickController.protected);
+router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), Middleware.auth, AuthBracketBrickController.protected);
 
 //School
 router.group('/school', (router) => {
+    // Auth JWT
     router.post('/register', AuthSchoolController.register);
     router.post('/login', AuthSchoolController.login);
 
     router.group('/protected', (router) => {
-        router.use(AuthMiddleware.auth, passport.authenticate("jwt", {session: false}));
+        router.use(Middleware.auth, passport.authenticate("jwt", {session: false}));
         router.get('/', AuthSchoolController.protected);
     })
 })

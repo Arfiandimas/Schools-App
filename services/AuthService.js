@@ -3,9 +3,11 @@ const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 const { v4: uuidv4 } = require('uuid');
+var CryptoJS = require("crypto-js");
 
 const {OauthAccessToken} = require('../models')
 const {BracketBrick} = require('../models')
+const {OauthClient} = require('../models')
 
 const jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -13,6 +15,12 @@ jwtOptions.secretOrKey = process.env.SECRET_KEY
 
 const getUser = async obj => {
     return await BracketBrick.findOne({
+        where: obj
+    })
+}
+
+const getOauthClientId = async obj => {
+    return await OauthClient.findOne({
         where: obj
     })
 }
@@ -29,41 +37,30 @@ const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
 passport.use(strategy)
 
 module.exports = {
-    async authenticate (user, modelType, scope) {
-        const oauthAccessTokenId = uuidv4() 
+    async authenticate (oauthClient, user, modelType, scope) {
+        const oauthClientQuery = await getOauthClientId({name: oauthClient});
+        if (!oauthClientQuery) {
+            throw new Error()
+        }
+
+        const mykey = CryptoJS.AES.encrypt(oauthClientQuery.secret, process.env.SECRET_KEY).toString();
+        
+        const exp = 60 * 60 * 24 * 365
+        const t = new Date();
+        const time = t.setSeconds(t.getSeconds() + exp)
+        const oauthAccessTokenId = uuidv4()
         const payload = {id: {id: oauthAccessTokenId, user_id: user.id, model: modelType}}
-        const token = jwt.sign (payload, process.env.SECRET_KEY)
+        const token = jwt.sign (payload, mykey, { expiresIn: exp})
         const newAcessToken = new OauthAccessToken({
             id : oauthAccessTokenId,
-            secretKey : process.env.SECRET_KEY,
+            oauthClientId: oauthClientQuery.id,
             modelType : modelType,
             modelId : user.id,
-            scope : scope
+            scope : scope,
+            expiresAt : new Date(time)
         })
 
         await newAcessToken.save()
-
-        return token
-    },
-
-    async login (user, modelType, scope) {
-        const payload = {id: {id: user.id,model: modelType}}
-        const token = jwt.sign (payload, process.env.SECRET_KEY)
-
-        // const token = jwt.sign (payload, process.env.SECRET_KEY);
-        // const decode = jwt.verify(token, process.env.SECRET_KEY);
-        // res.status(201).send([payload.id, decode.id])
-        
-        const newAcessToken = new OauthAccessToken({
-            payload : JSON.stringify(payload),
-            secretKey : process.env.SECRET_KEY,
-            modelType : modelType,
-            modelId : user.id,
-            scope : scope
-        })
-
-        await newAcessToken.save()
-
         return token
     }
 }

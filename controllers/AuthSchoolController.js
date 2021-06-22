@@ -31,7 +31,8 @@ module.exports = {
             
             const modelType = 'School'
             const scope = 'school'
-            const token = await AuthService.authenticate(school, modelType, scope)
+            const oauthClient = 'jwt'
+            const token = await AuthService.authenticate(oauthClient, school, modelType, scope)
 
             return res.status(201).send({school, token})
         } catch (error) {
@@ -43,19 +44,20 @@ module.exports = {
         try {
             const {email, password} = req.body
             if (email && password) {
-                const user = await getSchool({email : email})
+                const school = await getSchool({email : email})
 
-                if (!user) {
+                if (!school) {
                     return res.status(401).send({message: "email belum terdaftar !"})
                 }
                 
-                const isMatch = await bcrypt.compare(password, user.password)
-
+                const isMatch = await bcrypt.compare(password, school.password)
+                
                 if (isMatch) {
                     const modelType = 'School'
                     const scope = 'school'
-                    const token = await AuthService.authenticate(user, modelType, scope)
-                    return res.status(200).send({user, token})
+                    const oauthClient = 'jwt'
+                    const token = await AuthService.authenticate(oauthClient, school, modelType, scope)
+                    return res.status(200).send({school, token})
                 } else {
                     return res.status(401).send({message: "password salah !"})
                 }
