@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const CryptoJS = require("crypto-js");
 
 const {BracketBrick} = require('../models')
 const {School} = require('../models')

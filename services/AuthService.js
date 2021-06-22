@@ -3,7 +3,7 @@ const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 const { v4: uuidv4 } = require('uuid');
-var CryptoJS = require("crypto-js");
+const CryptoJS = require("crypto-js");
 
 const {OauthAccessToken} = require('../models')
 const {BracketBrick} = require('../models')
@@ -19,7 +19,7 @@ const getUser = async obj => {
     })
 }
 
-const getOauthClientId = async obj => {
+const getOauthClient = async obj => {
     return await OauthClient.findOne({
         where: obj
     })
@@ -38,7 +38,7 @@ passport.use(strategy)
 
 module.exports = {
     async authenticate (oauthClient, user, modelType, scope) {
-        const oauthClientQuery = await getOauthClientId({name: oauthClient});
+        const oauthClientQuery = await getOauthClient({name: oauthClient});
         if (!oauthClientQuery) {
             throw new Error()
         }
