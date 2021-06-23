@@ -38,6 +38,8 @@ router.group('/bracketbrick', (router) => {
         router.use(Middleware.auth);
         router.use(Scope.bracketbrickScope);
         router.get('/', BracketbrickPermissionController.getPermission);
+        router.get('/school', BracketbrickPermissionController.getSchoolFromPermission);
+        router.get('/school_employee', BracketbrickPermissionController.getSchoolEmployeeFromPermission);
     })
 
     router.group('/school', (router) => {
