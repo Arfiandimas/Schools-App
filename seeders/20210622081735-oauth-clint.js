@@ -4,16 +4,16 @@ const { v4: uuidv4 } = require('uuid')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('OauthClients', [{
-      id: uuidv4(),
-      name: 'jwt',
-      secret: 'qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapoiuytrewq',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }]);
+    // return queryInterface.bulkInsert('OauthClients', [{
+    //   id: uuidv4(),
+    //   name: 'google',
+    //   secret: 'lkjhgfdsaqwertyuiopmnbvcxzzxcvbnmpoiuytrewqasdfghjkl',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date()
+    // }]);
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('OauthClients', null, {});
+    // return queryInterface.bulkDelete('OauthClients', null, {});
   }
 };

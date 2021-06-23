@@ -24,6 +24,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      nfcCode: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      class: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       phone: {
         allowNull: false,
         type: Sequelize.STRING

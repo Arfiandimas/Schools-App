@@ -31,7 +31,7 @@ router.group('/school', (router) => {
     router.post('/login', AuthSchoolController.login);
 
     router.group('/protected', (router) => {
-        router.use(Middleware.auth, passport.authenticate("jwt", {session: false}));
+        router.use(Middleware.auth);
         router.get('/', AuthSchoolController.protected);
     })
 })

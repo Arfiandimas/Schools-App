@@ -8,6 +8,14 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
+      districtId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references : {
+          model: 'Districts',
+          key: 'id'
+        }
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING

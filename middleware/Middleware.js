@@ -5,6 +5,13 @@ const {BracketBrick} = require('../models')
 const {School} = require('../models')
 const {SchoolEmployee} = require('../models')
 const {Student} = require('../models')
+const {OauthClient} = require('../models')
+
+const getOauthClient = async obj => {
+    return await OauthClient.findOne({
+        where: obj
+    })
+}
 
 module.exports = {
     async auth (req, res, next) {
