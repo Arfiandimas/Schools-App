@@ -1,8 +1,8 @@
-const {SchoolEmployee} = require('./../../models')
+const {Permission} = require('./../../models')
 
 module.exports = {
-    async getEmployee (req, res) {
-        const data = await SchoolEmployee.findAll({
+    async getPermission (req, res) {
+        const data = await Permission.findAll({
             order: [
                 ['createdAt', 'DESC']
             ]

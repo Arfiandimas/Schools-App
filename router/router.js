@@ -6,13 +6,16 @@ const Router = require('express-group-router');
 const AuthBracketBrickController = require('../controllers/AuthBracketBrickController')
 const AuthSchoolController = require('../controllers/AuthSchoolController')
 //BracketBrick
-const BracketBrickSchoolController = require('./../controllers/bracketbrick/SchoolController')
+const BracketbrickSchoolController = require('./../controllers/bracketbrick/SchoolController')
+const BracketbrickPermissionController = require('./../controllers/bracketbrick/PermissionController')
 //School
 const SchoolEmployeeController = require('./../controllers/school/EmployeeController')
 
+//Scope
+const Scope = require('./../middleware/Scope')
 
 //Middleware
-const Middleware = require('../middleware/Middleware')
+const Middleware = require('../middleware/Authentication')
 
 //Request Validation
 const BracketbrickRequest = require('./../requests/BracketbrickRequest')
@@ -27,16 +30,20 @@ const {ModelHasPermission} = require('../models')
 
 //Bracket Brick
 router.group('/bracketbrick', (router) => {
+    // Auth JWT
     router.post('/register', BracketbrickRequest.register, AuthBracketBrickController.register);
     router.post('/login', AuthBracketBrickController.login);
-    router.group('/protected', (router) => {
+
+    router.group('/permission', (router) => {
         router.use(Middleware.auth);
-        router.get('/', AuthBracketBrickController.protected);
+        router.use(Scope.bracketbrickScope);
+        router.get('/', BracketbrickPermissionController.getPermission);
     })
 
     router.group('/school', (router) => {
         router.use(Middleware.auth);
-        router.get('/', BracketBrickSchoolController.getSchool);
+        router.use(Scope.bracketbrickScope);
+        router.get('/', BracketbrickSchoolController.getSchool);
     })
 })
 
@@ -46,13 +53,9 @@ router.group('/school', (router) => {
     router.post('/register', AuthSchoolController.register);
     router.post('/login', AuthSchoolController.login);
 
-    router.group('/protected', (router) => {
-        router.use(Middleware.auth);
-        router.get('/', AuthSchoolController.protected);
-    })
-
     router.group('/employee', (router) => {
         router.use(Middleware.auth);
+        router.use(Scope.schoolScope);
         router.get('/', SchoolEmployeeController.getEmployee);
     })
 })

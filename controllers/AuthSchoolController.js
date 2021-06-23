@@ -69,13 +69,5 @@ module.exports = {
         } catch (error) {
             return res.status(500).send(error)
         }
-    },
-
-    async protected (req, res) {
-        try {
-            return res.status(200).send({data : req.user, message: "token valid !"})
-        } catch (error) {
-            return res.status(500).send(error)
-        }
     }
 }
