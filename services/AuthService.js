@@ -37,21 +37,21 @@ const getOauthClient = async obj => {
 
 const secretKey = async oauthClient => {
     const oauthClientQuery = await getOauthClient({name: oauthClient});
-    const encrypt = CryptoJS.HmacMD5(oauthClientQuery.secret, process.env.SECRET_KEY).toString();
-    // const decrypt = CryptoJS.decrypt(encrypt, process.env.SECRET_KEY);
-    return encrypt
+    // const encrypt = CryptoJS.HmacRIPEMD160(oauthClientQuery.secret, process.env.SECRET_KEY).toString();
+    // // const decrypt = CryptoJS.decrypt(encrypt, process.env.SECRET_KEY);
+    return oauthClientQuery.secret
 }
 
 module.exports = {
     async authenticate (oauthClient, user, modelType, scope) {
-        const dksas = secretKey(oauthClient)
-        return dksas
+        const finalSecretKey = await secretKey(oauthClient) + process.env.SECRET_KEY
         const exp = 60 * 60 * 24 * 365
         const t = new Date();
         const time = t.setSeconds(t.getSeconds() + exp)
         const oauthAccessTokenId = uuidv4()
         const payload = {id: {id: oauthAccessTokenId, user_id: user.id, model: modelType}}
-        const token = jwt.sign (payload, secretKey(), { expiresIn: exp})
+        const token = jwt.sign (payload, finalSecretKey, { expiresIn: exp})
+        const oauthClientQuery = await getOauthClient({name: oauthClient});
         const newAcessToken = new OauthAccessToken({
             id : oauthAccessTokenId,
             oauthClientId: oauthClientQuery.id,

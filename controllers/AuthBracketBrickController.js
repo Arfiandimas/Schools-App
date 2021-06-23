@@ -29,7 +29,8 @@ module.exports = {
             
             const modelType = 'BracketBrick'
             const scope = 'bracketbrick'
-            const token = await AuthService.authenticate(user, modelType, scope)
+            const oauthClient = 'jwt'
+            const token = await AuthService.authenticate(oauthClient, user, modelType, scope)
 
             return res.status(201).send({user, token})
         } catch (error) {
@@ -52,7 +53,8 @@ module.exports = {
                 if (isMatch) {
                     const modelType = 'BracketBrick'
                     const scope = 'bracketbrick'
-                    const token = await AuthService.authenticate(user, modelType, scope)
+                    const oauthClient = 'jwt'
+                    const token = await AuthService.authenticate(oauthClient, user, modelType, scope)
                     return res.status(200).send({user, token})
                 } else {
                     return res.status(401).send({message: "password salah !"})

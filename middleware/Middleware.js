@@ -13,11 +13,20 @@ const getOauthClient = async obj => {
     })
 }
 
+const secretKey = async oauthClient => {
+    const oauthClientQuery = await getOauthClient({name: oauthClient});
+    // const encrypt = CryptoJS.HmacRIPEMD160(oauthClientQuery.secret, process.env.SECRET_KEY).toString();
+    // // const decrypt = CryptoJS.decrypt(encrypt, process.env.SECRET_KEY);
+    return oauthClientQuery.secret
+}
+
 module.exports = {
     async auth (req, res, next) {
         try {
+            const provider = req.header('Provider')
+            const finalSecretKey = await secretKey(provider) + process.env.SECRET_KEY
             const token = req.header('Authorization').replace('Bearer ', '')
-            const decode = jwt.verify(token, process.env.SECRET_KEY)
+            const decode = jwt.verify(token, finalSecretKey)
             if (decode.id.model === 'BracketBrick') {
                 var user = await BracketBrick.findOne({ 
                     where: {

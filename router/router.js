@@ -1,9 +1,15 @@
-const passport = require('passport')
+// const passport = require('passport') passport.authenticate("jwt", {session: false}),
 const Router = require('express-group-router');
 
 //Controller
+//Auth
 const AuthBracketBrickController = require('../controllers/AuthBracketBrickController')
 const AuthSchoolController = require('../controllers/AuthSchoolController')
+//BracketBrick
+const BracketBrickSchoolController = require('./../controllers/bracketbrick/SchoolController')
+//School
+const SchoolEmployeeController = require('./../controllers/school/EmployeeController')
+
 
 //Middleware
 const Middleware = require('../middleware/Middleware')
@@ -20,9 +26,19 @@ const {Permission} = require('../models')
 const {ModelHasPermission} = require('../models')
 
 //Bracket Brick
-router.post('/bracketbrick/register', BracketbrickRequest.register, AuthBracketBrickController.register);
-router.post('/bracketbrick/login', AuthBracketBrickController.login);
-router.get('/bracketbrick/protected', passport.authenticate("jwt", {session: false}), Middleware.auth, AuthBracketBrickController.protected);
+router.group('/bracketbrick', (router) => {
+    router.post('/register', BracketbrickRequest.register, AuthBracketBrickController.register);
+    router.post('/login', AuthBracketBrickController.login);
+    router.group('/protected', (router) => {
+        router.use(Middleware.auth);
+        router.get('/', AuthBracketBrickController.protected);
+    })
+
+    router.group('/school', (router) => {
+        router.use(Middleware.auth);
+        router.get('/', BracketBrickSchoolController.getSchool);
+    })
+})
 
 //School
 router.group('/school', (router) => {
@@ -33,6 +49,11 @@ router.group('/school', (router) => {
     router.group('/protected', (router) => {
         router.use(Middleware.auth);
         router.get('/', AuthSchoolController.protected);
+    })
+
+    router.group('/employee', (router) => {
+        router.use(Middleware.auth);
+        router.get('/', SchoolEmployeeController.getEmployee);
     })
 })
 

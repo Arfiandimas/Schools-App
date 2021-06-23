@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const AuthService = require('./../services/AuthService')
 
 const {School} = require('../models')
+const {OauthClient} = require('../models')
 
 const getSchool = async obj => {
     return await School.findOne({
@@ -13,11 +14,12 @@ const getSchool = async obj => {
 module.exports = {
     async register (req, res) {
         try {
-            const {name, logo, npsn, email, password} = req.body
+            const {name, logo, npsn, districtId, email, password} = req.body
             const newSchool = new School({
                 name,
                 logo,
                 npsn,
+                districtId,
                 email,
                 password
             })
