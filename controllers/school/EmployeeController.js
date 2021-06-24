@@ -35,7 +35,7 @@ module.exports = {
     
             const schoolEmployee = await newData.save()
     
-            return res.status(200).send(schoolEmployee)   
+            return res.status(201).send(schoolEmployee)   
         } catch (error) {
             return res.status(500).send(error)
         }
