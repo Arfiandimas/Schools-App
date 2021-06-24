@@ -5,21 +5,24 @@ const Router = require('express-group-router');
 //Auth
 const AuthBracketBrickController = require('../controllers/AuthBracketBrickController')
 const AuthSchoolController = require('../controllers/AuthSchoolController')
+const AuthSchoolEmployeeController = require('../controllers/AuthSchoolEmployeeController')
 //BracketBrick
 const BracketbrickSchoolController = require('./../controllers/bracketbrick/SchoolController')
 const BracketbrickPermissionController = require('./../controllers/bracketbrick/PermissionController')
 //School
 const SchoolEmployeeController = require('./../controllers/school/EmployeeController')
-
-//Scope
-const Scope = require('./../middleware/Scope')
+const SchoolHistoryAttendanceController = require('./../controllers/school/HistoryAttendanceController')
 
 //Middleware
 const Middleware = require('../middleware/Authentication')
+const Scope = require('./../middleware/Scope')
+const PermissionMiddleware = require('./../middleware/Permission')
 
 //Request Validation
 const BracketbrickRequest = require('./../requests/BracketbrickRequest')
 const PermissionRequest = require('./../requests/PermissionRequest')
+const SchoolEmployeeRequest = require('./../requests/SchoolEmployeeRequest')
+const LoginRequest = require('./../requests/LoginRequest')
 
 const router = new Router();
 
@@ -29,12 +32,15 @@ const {Student} = require('../models')
 const {Permission} = require('../models')
 const {ModelHasPermission} = require('../models')
 
+//Authentication JWT
+router.post('/bracketbrick/register', BracketbrickRequest.register, AuthBracketBrickController.register);
+router.post('/bracketbrick/login', LoginRequest.email, AuthBracketBrickController.login);
+router.post('/school/register', AuthSchoolController.register); // TODO: tambah request validasi
+router.post('/school/login', LoginRequest.email, AuthSchoolController.login);
+router.post('/school_employee/login', LoginRequest.email, AuthSchoolEmployeeController.login);
+
 //Bracket Brick
 router.group('/bracketbrick', (router) => {
-    // Auth JWT
-    router.post('/register', BracketbrickRequest.register, AuthBracketBrickController.register);
-    router.post('/login', AuthBracketBrickController.login);
-
     router.group('/permission', (router) => {
         router.use(Middleware.auth);
         router.use(Scope.bracketbrickScope);
@@ -54,14 +60,18 @@ router.group('/bracketbrick', (router) => {
 
 //School
 router.group('/school', (router) => {
-    // Auth JWT
-    router.post('/register', AuthSchoolController.register);
-    router.post('/login', AuthSchoolController.login);
-
     router.group('/employee', (router) => {
         router.use(Middleware.auth);
         router.use(Scope.schoolScope);
-        router.get('/', SchoolEmployeeController.getEmployee);
+        router.get('/', SchoolEmployeeController.index);
+        router.post('/store', SchoolEmployeeRequest.store, SchoolEmployeeController.store);
+    })
+
+    router.group('/history_attendance', (router) => {
+        router.use(Middleware.auth);
+        router.use(Scope.schoolScope);
+        router.use(PermissionMiddleware.attendance);
+        router.get('/', SchoolHistoryAttendanceController.index);
     })
 })
 

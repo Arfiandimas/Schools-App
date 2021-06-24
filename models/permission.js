@@ -13,6 +13,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Permission.hasMany(models.ModelHasPermission)
+      // Permission.belongsToMany(models.School, {
+      //   through: {
+      //     model: models.ModelHasPermission,
+      //     unique: false,
+      //     scope: {
+      //       modelType: 'School'
+      //     }
+      //   },
+      //   foreignKey: 'modelId',
+      //   constraints: false
+      // });
     }
   };
   Permission.init({

@@ -1,2 +1,3 @@
 TODO: kurang db transaction
 TODO: name client secret unique
+TODO: saat menambahkan permission ke school atau school employee dicek sudah punya permission itu belum/tidak boleh double

@@ -66,7 +66,7 @@ module.exports = {
             const decode = jwt.verify(token, finalSecretKey)
             const scope = await getOauthAccessToken({id:decode.id.id})
             
-            if (scope.scope === 'schoolEmployee') {
+            if (scope.scope === 'schoolemployee') {
                 next()
             } else {
                 res.status(403).send('Not Authorized.')

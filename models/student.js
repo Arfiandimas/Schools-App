@@ -1,3 +1,6 @@
+const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt')
+
 'use strict';
 const {
   Model
@@ -32,5 +35,18 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Student',
     paranoid: true,
   });
+
+  Student.beforeCreate( async (student) => {
+      student.id = await uuidv4()
+      student.password = await bcrypt.hash(student.password, 8)
+  })
+
+  Student.prototype.toJSON = function () {
+    const values = Object.assign({}, this.get());
+
+    delete values.password;
+    return values;
+  }
+
   return Student;
 };

@@ -22,6 +22,17 @@ module.exports = (sequelize, DataTypes) => {
           modelType : 'School' 
         }
       })
+      // School.belongsToMany(models.Permission, {
+      //   through: {
+      //     model: models.ModelHasPermission,
+      //     unique: false,
+      //     scope: {
+      //       modelType: 'School' 
+      //     }
+      //   },
+      //   foreignKey: 'modelId',
+      //   constraints: false
+      // })
 
     }
   };
