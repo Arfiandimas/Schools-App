@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ModelHasPermission',
+    paranoid: true,
   });
   return ModelHasPermission;
 };

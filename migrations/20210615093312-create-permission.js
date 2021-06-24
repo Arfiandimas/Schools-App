@@ -23,6 +23,10 @@ module.exports = {
       deletedAt: {
         allowNull: true,
         type: Sequelize.DATE
+      },
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE
       }
     });
   },

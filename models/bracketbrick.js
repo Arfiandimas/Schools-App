@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'BracketBrick',
+    paranoid: true,
   });
 
   BracketBrick.beforeCreate( async (user) => {

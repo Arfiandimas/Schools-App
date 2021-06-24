@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'OauthRefreshToken',
+    paranoid: true,
   });
   return OauthRefreshToken;
 };

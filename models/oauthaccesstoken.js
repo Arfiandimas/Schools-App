@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'OauthAccessToken',
+    paranoid: true,
   });
 
   return OauthAccessToken;
