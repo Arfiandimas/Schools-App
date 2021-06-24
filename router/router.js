@@ -19,6 +19,7 @@ const Middleware = require('../middleware/Authentication')
 
 //Request Validation
 const BracketbrickRequest = require('./../requests/BracketbrickRequest')
+const PermissionRequest = require('./../requests/PermissionRequest')
 
 const router = new Router();
 
@@ -37,7 +38,9 @@ router.group('/bracketbrick', (router) => {
     router.group('/permission', (router) => {
         router.use(Middleware.auth);
         router.use(Scope.bracketbrickScope);
-        router.get('/', BracketbrickPermissionController.getPermission);
+        router.get('/', BracketbrickPermissionController.index);
+        router.post('/store', PermissionRequest.store, BracketbrickPermissionController.store);
+        router.delete('/:id/destroy', BracketbrickPermissionController.destroy);
         router.get('/school', BracketbrickPermissionController.getSchoolFromPermission);
         router.get('/school_employee', BracketbrickPermissionController.getSchoolEmployeeFromPermission);
     })

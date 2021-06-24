@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid')
+
 'use strict';
 const {
   Model
@@ -18,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Permission',
+    paranoid: true,
   });
+
+  Permission.beforeCreate( async (data) => {
+      data.id = await uuidv4()
+  })
+
   return Permission;
 };

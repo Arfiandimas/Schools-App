@@ -1,10 +1,8 @@
-const {Permission, Sequelize} = require('./../../models')
-const {ModelHasPermission} = require('./../../models')
-const {School} = require('./../../models')
-const {SchoolEmployee} = require('./../../models')
+const {Permission, ModelHasPermission, School, SchoolEmployee} = require('./../../models')
+const Sequelize = require('sequelize')
 
 module.exports = {
-    async getPermission (req, res) {
+    async index (req, res) {
         try {
             const data = await Permission.findAll({
                 order: [
@@ -12,6 +10,45 @@ module.exports = {
                 ]
             })
             return res.status(200).send(data)
+        } catch (error) {
+            return res.status(500).send(error)
+        }
+    },
+    async store (req, res) {
+        try {
+            const data = new Permission({
+                name : req.body.name
+            })
+            await data.save()
+            return res.status(201).send(data)
+        } catch (error) {
+            return res.status(500).send(error)
+        }
+    },
+    async destroy (req, res) {
+        try {
+            const data = await Permission.findOne({
+                where: {
+                    id : req.params.id
+                },
+                attributes: { 
+                    include: [[Sequelize.fn("COUNT", Sequelize.col("ModelHasPermissions.id")), "count"]] 
+                },
+                include: [{
+                    model: ModelHasPermission, attributes: []
+                }]
+            })
+    
+            if (data.id === null) {
+                return res.status(400).send({message : 'data tidak ditemukan'})
+            }
+    
+            if (data.getDataValue('count') != 0) {
+                return res.status(400).send({message : 'gagal delete, permission digunakan'})
+            }
+    
+            await data.destroy();
+            return res.status(200).send(data)   
         } catch (error) {
             return res.status(500).send(error)
         }

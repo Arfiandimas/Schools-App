@@ -1,11 +1,9 @@
 const Joi =  require('joi')
 
 module.exports = {
-    async register (req, res, next) {
+    async store (req, res, next) {
         const schema = Joi.object({
-            name: Joi.string().max(255).required(),
-            email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).max(255).required(),
-            password: Joi.string().max(255).required()
+            name: Joi.string().max(255).required()
         })
 
         const result = await schema.validate(req.body);
