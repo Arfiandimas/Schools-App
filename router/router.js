@@ -12,6 +12,8 @@ const BracketbrickPermissionController = require('./../controllers/bracketbrick/
 //School
 const SchoolEmployeeController = require('./../controllers/school/EmployeeController')
 const SchoolHistoryAttendanceController = require('./../controllers/school/HistoryAttendanceController')
+//School Employee
+const SchoolEmployeeProfileController = require('./../controllers/schoolemployee/ProfileController')
 
 //Middleware
 const Middleware = require('../middleware/Authentication')
@@ -74,6 +76,16 @@ router.group('/school', (router) => {
         router.use(Scope.schoolScope);
         router.use(PermissionMiddleware.attendance);
         router.get('/', SchoolHistoryAttendanceController.index);
+    })
+})
+
+//School Employee
+router.group('/school_employee', (router) => {
+    router.use(Middleware.auth);
+    router.use(Scope.schoolEmployeeScope);
+
+    router.group('/profile', (router) => {
+        router.get('/', SchoolEmployeeProfileController.index);
     })
 })
 
