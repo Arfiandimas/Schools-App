@@ -1,5 +1,4 @@
 const {Permission, ModelHasPermission, School, SchoolEmployee} = require('./../../models')
-const {District} = require('./../../models')
 const Sequelize = require('sequelize')
 
 module.exports = {
