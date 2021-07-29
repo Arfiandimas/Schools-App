@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package authpackage;
+
+service Greeter {
+    rpc getStudents (Empty) returns (Students) {}
+}
+
+// Request
+message Empty {
+
+}
+
+// Reply
+message Student {
+    string nama = 1;
+    string nim = 2;
+}
+  
+message Students {
+    repeated Student data = 1;
+}
