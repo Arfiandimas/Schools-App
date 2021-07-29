@@ -58,7 +58,9 @@ router.group('/bracketbrick', (router) => {
         router.use(Middleware.auth);
         router.use(Scope.bracketbrickScope);
         router.get('/', BracketbrickSchoolController.index);
+        router.get('/:id/show', BracketbrickSchoolController.show);
         router.post('/store', SchoolRequest.register, BracketbrickSchoolController.store);
+        router.post('/:id/give_permission', PermissionRequest.givePermission, BracketbrickSchoolController.givePermission);
     })
 })
 
@@ -68,7 +70,9 @@ router.group('/school', (router) => {
         router.use(Middleware.auth);
         router.use(Scope.schoolScope);
         router.get('/', SchoolEmployeeController.index);
+        router.get('/:id/show', SchoolEmployeeController.show);
         router.post('/store', SchoolEmployeeRequest.store, SchoolEmployeeController.store);
+        router.post('/:id/give_permission', PermissionRequest.givePermission, SchoolEmployeeController.givePermission);
     })
 
     router.group('/history_attendance', (router) => {
