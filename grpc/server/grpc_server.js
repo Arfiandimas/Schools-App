@@ -16,11 +16,12 @@ const protoDefinition = protoLoader.loadSync(
 const proto = grpc.loadPackageDefinition(protoDefinition).authpackage
 
 function getStudents(call, callback) {
-    let data =  [
-        {nama : 'Barjono', nim : '17.11.1018'},
-        {nama : 'Lahh', nim : '17.11.1019'}
+    let data_server =  [
+        {no : 1, kelas : 'IPA', angkatan : 2017},
+        {no : 2, kelas : 'IPS', angkatan : 2017}
     ]
-    callback(null, {data: data})
+    console.log(call.request.halah)
+    callback(null, {message: data_server})
 }
 
 function main() {

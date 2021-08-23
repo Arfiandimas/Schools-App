@@ -3,20 +3,28 @@ syntax = "proto3";
 package authpackage;
 
 service Greeter {
-    rpc getStudents (Empty) returns (Students) {}
+    rpc getStudents (CobaArrayRequest) returns (CobaArrayReply) {}
 }
 
-// Request
-message Empty {
 
-}
 
-// Reply
+// Repeated Data
 message Student {
     string nama = 1;
     string nim = 2;
 }
-  
-message Students {
-    repeated Student data = 1;
+message Kelas {
+    int32 no = 1;
+    string kelas = 2;
+    int32 angkatan = 3;
+}
+
+// Request
+message CobaArrayRequest {
+    repeated Student halah = 1;
+}
+
+// Reply
+message CobaArrayReply {
+    repeated Kelas message = 1;
 }

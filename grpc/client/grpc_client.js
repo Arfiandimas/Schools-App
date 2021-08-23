@@ -18,8 +18,11 @@ const proto = grpc.loadPackageDefinition(protoDefinition).authpackage
 function main() {
     target = 'localhost:50051';
     let client = new proto.Greeter(target,grpc.credentials.createInsecure());
-
-    client.getStudents({}, function (err, response) {
+    let data =  [
+        {nama : 'Barjono', nim : '17.11.1018'},
+        {nama : 'Lahh', nim : '17.11.1019'}
+    ]
+    client.getStudents({halah: data}, function (err, response) {
         console.log(response)
     })
 }
